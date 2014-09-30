@@ -71,12 +71,55 @@ void generateHand()
 	}
 }
 
+// checks if hand has inputed letters
+
+bool checkWord(string word)
+{
+	string letters = "";
+	for(int i = 0; i < 7; ++i)
+	{
+		if(hand[i].used == 0)
+		{
+			letters += hand[i].ltr;
+		}			
+	}
+
+	int counter = 0;
+	for(int i = 0; i < int(word.size()); ++i)
+	{
+		for(int j = 0; j < int(letters.size()); ++j)
+		{
+			if(word[i] == letters[j])
+			{
+				letters.erase(j, 1);
+				counter++;
+			}
+		}
+	}
+	if(counter == int(word.size()))
+	{
+		return true;
+	}
+	return false;
+}
+
 // user input
 string input()
 {	
 	string str;
 	cin >> str;
-	return str;
+	if(str == "1")
+	{
+		exit(0);
+	}
+	else if (!checkWord(str))
+	{
+		cout << endl;
+		cout << "Wrong input! You don't have such letters! Try again!" << endl;
+		game();
+	}
+	else
+		return str;
 }
 
 
@@ -248,10 +291,6 @@ void game()
 	cout << endl;
 	cout << "Now input your word or 1 to exit: ";
 	string word; word = input();
-	if(word == "1")
-	{
-		exit(0);
-	}
 	cout << endl;
 	cout << "*******************" << endl;
 	cout << endl;
