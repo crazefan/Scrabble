@@ -14,7 +14,10 @@ bool checkWord(string word, string letters)
 		for(int j = 0; j < int(letters.size()); ++j)
 		{
 			if(word[i] == letters[j])
+			{
+				letters.erase(j, 1);
 				counter++;
+			}
 		}
 	}
 	if(counter == int(word.size()))
@@ -30,7 +33,7 @@ bool checkWord(string word, string letters)
 
 int main()
 {
-	if(checkWord("abcd", "abc"))
+	if(checkWord("eeee", "aebc"))
 	{
 		cout << "YAAY";
 	}
