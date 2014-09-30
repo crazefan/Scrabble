@@ -8,14 +8,14 @@
 using namespace std;
 
 
-/*
-super igra by Zufar Ismanov.
-Imboviy project manager: Timur Dolgopolov.
-Chutok pomog: Koreec*/
+/*Scrabble Game Project
+for Software Engineering course.
+Made by Zufar Ismanov and Ilia Ni
+*/
 
 int count(string& word);
 void game();
-void generate();
+void generateHand();
 void next_step(int a);
 
 struct Letter
@@ -36,6 +36,8 @@ struct Letter
 vector<Letter> hand(7);
 int res = 0;
 
+
+// display the rules of this game
 void rules(int a)
 {	
 	cout << "               RULES:               " << endl;
@@ -57,7 +59,8 @@ void rules(int a)
 		next_step(1);
 }
 
-void generate()
+//generate new hand
+void generateHand()
 { 
 	srand(time(NULL)); 
 	for(int i = 0; i < 7; ++i)
@@ -68,6 +71,7 @@ void generate()
 	}
 }
 
+// user input
 string input()
 {	
 	string str;
@@ -75,6 +79,8 @@ string input()
 	return str;
 }
 
+
+//checks if there is inputed word in words.txt
 bool check(string word)
 {
 	ifstream fin ("words.txt");
@@ -89,6 +95,7 @@ bool check(string word)
 	return false;
 }
 
+// counts points that user will get for correct word
 int count(string& word)
 {
 	int counter = 0;
@@ -143,6 +150,7 @@ int count(string& word)
 	return counter;
 }
 
+// changes value of letters for "used" if user inputed them
 void hand_handler(string word)
 {
 	for(int i = 0; i < int(word.size()); ++i)
@@ -158,7 +166,7 @@ void hand_handler(string word)
 	}
 }
 
-
+// action that user chooses every time in the game
 void next_step(int a)
 {
 	cout << ">>> To continiue press 1" << endl;
@@ -179,7 +187,7 @@ void next_step(int a)
 	}
 	else if(inp == 2)
 	{
-		generate();
+		generateHand();
 		res = 0;
 		game();
 	}
@@ -193,6 +201,29 @@ void next_step(int a)
 	}
 }
 
+
+// display the result of the game
+void result_handler(int a, string& word)
+{
+	hand_handler(word);	
+	if(a == 1)
+	{
+		cout << "Awesome! We found your word in our txt file!" << endl;
+		res += count(word);
+	}
+	else
+	{
+		cout << "You failed! Sorry:((( " << endl;
+	}
+	cout << "------------------------" << endl;
+	cout << "Your result is: " << res << endl;
+	cout << "------------------------" << endl;
+	cout << endl;
+
+	next_step(2);
+}
+
+// main game logic goes here
 void game()
 {
 	cout << endl;
@@ -226,28 +257,11 @@ void game()
 	cout << endl;
 	if(check(word))
 	{
-		cout << "Krasavchik, brat! Ty ugadal slovo!" << endl;
-		hand_handler(word);
-		res += count(word);
-
-		cout << "------------------------" << endl;
-		cout << "Your result is: " << res << endl;
-		cout << "------------------------" << endl;
-		cout << endl;
-	
-		next_step(2);
+		result_handler(1, word);
 	}
 	else
 	{	
-		cout << "Sorry, brat! Net takogo slova :(((" << endl;
-		hand_handler(word);
-
-		cout << "------------------------" << endl;
-		cout << "Your result is: " << res << endl;
-		cout << "------------------------" << endl;
-		cout << endl;
-	
-		next_step(2);
+		result_handler(2, word);
 	}
 }
 
@@ -265,7 +279,7 @@ int main()
 	int inp; cin >> inp;
 	if(inp == 1)
 	{
-		generate();
+		generateHand();
 		game();
 	}
 	return 0;
